@@ -11,8 +11,7 @@ const hydrate = require('./../src/util').hydrate;
 const defaultClientProperties = {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Length': 0
+        'Content-Type': 'application/json',
     }
 };
 
@@ -74,9 +73,14 @@ _.extend(Requester.prototype, {
      * @returns {*}
      */
     createPostData: function (message) {
-        return require('querystring').stringify({
-            body: message.content.toString(),
-            properties: JSON.stringify(hydrate(message.properties))
+        const {
+            properties: { headers },
+            content
+        } = message;
+
+        return JSON.stringify({
+            headers,
+            payload: content.toString(),
         });
     },
 
